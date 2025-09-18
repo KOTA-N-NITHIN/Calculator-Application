@@ -45,7 +45,7 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build and Docker image created successfully."
+            echo "✅ Build and Docker image created successfully.."
         }
         failure {
             echo "❌ Build failed. Check logs."
