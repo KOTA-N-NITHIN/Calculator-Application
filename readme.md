@@ -1,74 +1,86 @@
-It is a java based calculator application.
-It uses automate building, testing, packaging using maven integrated with jenkins
+# 🚀 Java Calculator Application with Jenkins CI/CD
 
-1️⃣ Prerequisites
-1.Jenkins installed (either on Windows, Linux, or via Docker).
-2.JDK installed on the Jenkins machine.
-3.Maven installed on the Jenkins machine.
-4.Your project in a Git repository
+## 📌 Project Overview
+This project is a **Java-based console calculator application** that performs:
+- Addition
+- Subtraction
+- Multiplication
+- Division
+- Exit option  
 
-2️⃣ Configure Jenkins
-1.Set up JDK & Maven in Jenkins
-Go to: Manage Jenkins → Global Tool Configuration.
+The application is built and packaged with **Maven**, containerized with **Docker**, and the entire process is automated using a **Jenkins Declarative Pipeline**.
 
-Add JDK:
-Name: JDK-21 (or whatever you prefer)
-JAVA_HOME path: example:C:\Program Files\Java\jdk-21
+---
 
-Add Maven:
-Name: your maven name
-Maven home: path to your maven ex:C:apache-maven-3.8.9-bin\apache-maven-3.8.9
+## ⚙️ Tech Stack
+- **Java** (Console Application)
+- **Maven** (Build Tool)
+- **Jenkins** (CI/CD Automation)
+- **Docker** (Containerization)
+- **GitHub** (Source Code Management)
 
-2.Set PATH correctly
-Jenkins uses its own environment. Make sure the tools are selected in the Jenkins job configuration.
+---
 
-3️⃣ Create a New Jenkins Job
+## 🔄 CI/CD Pipeline Workflow
+The pipeline is fully defined in the `Jenkinsfile`. It consists of the following stages:
 
-1.Click New Item → choose Freestyle project (or Pipeline if you want scripted pipeline).
+1. **Checkout**  
+   - Pulls the latest code from GitHub.  
 
-2.Name it e.g., Java-Calculator-Build.
+2. **Build with Maven**  
+   - Executes `mvn clean package -DskipTests` to build and package the application JAR.  
 
-3.Source Code Management
-Choose Git and provide your repository URL.
+3. **Build Docker Image**  
+   - Builds a Docker image containing the application JAR.  
 
-4.Build Environment
-Optionally check Delete workspace before build to avoid stale files.
+4. **Push Docker Image**  
+   - Tags and pushes the image to **Docker Hub** using Jenkins credentials.  
 
-5.Build Step
-Choose Invoke top-level Maven targets
-Goals: clean test package
-Maven version: select the one you configured (Maven-3.8.9)
-JDK: select JDK-21
+---
 
-4️⃣ Optional: Post-build Actions
+## Prerequisites
+- Java 8+  
+- Maven  
+- Docker  
+- Jenkins
 
--->Archive the artifact
-    Choose Archive the artifacts
-    Files to archive: target/*.jar
-    This will keep the runnable JAR in Jenkins for download.
--->Publish JUnit test results
-    Test report XMLs: target/surefire-reports/*.xml
-    This allows Jenkins to show test results in the UI.
+## 🐳 Docker Hub Repository
+The final image is pushed to Docker Hub:  
+👉 [kotannithin/java-calculator](https://hub.docker.com/r/kotannithin/java-calculator)
 
-5️⃣ Run the Job
-Click Build Now.
-Jenkins will:
-    Pull the latest code from Git.
-    Run mvn clean test package.
-    Produce the calculator-1.0-SNAPSHOT.jar.
-    Archive the JAR and test reports.
+---
 
-6️⃣ Make It Fully Automated (Optional)
+## 🖥️ How to Run the Application
+### Option 1: Run Locally with Maven
+```bash
+git clone https://github.com/KOTA-N-NITHIN/Calculator-Application.git
+cd Calculator-Application
+mvn clean package -DskipTests
+java -jar target/calculator-1.0-SNAPSHOT.jar
 
-Add Triggers:
-    Poll SCM: H/5 * * * * → check Git every 5 minutes.
-    Webhook trigger from GitHub → build automatically when code is pushed.
 
-    You now have CI/CD:
-        Tests are automatically run.
-        JAR is automatically created.
-        Reports and artifacts are accessible from Jenkins.
+Option 2: Run with Docker
 
-7.After that the build result is send to the developer using email notification whether the build is successfull or failed; if failed it will also send the details why it is failed. This feature is added in post build action section in email notification with recipient email address or email server address.
+docker pull kotannithin/java-calculator:latest
+docker run -it kotannithin/java-calculator:latest
 
-✅ Result: Every commit or trigger builds the project automatically, runs tests, and produces a runnable JAR.
+✅ Sample Output
+1. Add
+2. Subtract
+3. Multiply
+4. Divide
+5. Exit
+
+
+📜 License
+
+This project is for learning and demonstration purposes.
+
+**Java Calculator Application – CI/CD with Jenkins & Docker**  
+- Built a Java-based console calculator application.  
+- Automated build and deployment using **Jenkins Declarative Pipeline** with the following stages: GitHub checkout → Maven build → Docker image build → Docker Hub push.  
+- Containerized the application using **Docker** and published the image to Docker Hub.  
+
+---
+
+👉 pipeline flow (GitHub → Jenkins → Maven Build → Docker Build → Docker Hub)
