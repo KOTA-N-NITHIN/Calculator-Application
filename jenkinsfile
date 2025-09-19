@@ -11,11 +11,11 @@ pipeline {
         
         stage('"Build with Maven"') {
             steps {
-                bat 'mvn clean package -DskipTests'
+                bat 'mvn clean package'
             }
         }
 
-        stage('Build Docker Image') {
+      /* stage('Build Docker Image') {
             steps {
                 script {
                     bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
@@ -41,6 +41,21 @@ pipeline {
                 }
             }
         }
+
+
+            stage('Deploy to Kubernetes') {
+        steps {
+            script {
+                // Update the deployment with the new image
+                bat """
+                kubectl set image deployment/java-calculator-deployment \
+                java-calculator=${DOCKER_HUB_USER}/${DOCKER_IMAGE}:${DOCKER_TAG} --record
+                kubectl rollout status deployment/java-calculator-deployment
+                """
+            }
+        }
+    }*/
+
     }
 
     post {
